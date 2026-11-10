@@ -1,0 +1,9 @@
+[package]
+name = "aoc2022"
+version = "0.1.0"
+edition = "2024"
+repository = "https://codeberg.org/winchest3r/aoc2022"
+license = "MIT"
+
+[dependencies]
+regex = "1.13.1"
