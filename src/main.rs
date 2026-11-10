@@ -28,6 +28,7 @@ fn main() {
 fn run(day: u8) {
     match day {
         1 => run_day::<FirstSolution>(day),
+        2 => run_day::<SecondSolution>(day),
         other => {
             if (1u8..=25u8).contains(&other) {
                 println!("unimplemented day!")

@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn day01_part2_example() {
+    fn day01_part2_example1() {
         assert_eq!("45000", FirstSolution::part2(TEST_INPUT));
     }
 }
