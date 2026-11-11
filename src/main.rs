@@ -29,6 +29,7 @@ fn run(day: u8) {
     match day {
         1 => run_day::<FirstSolution>(day),
         2 => run_day::<SecondSolution>(day),
+        3 => run_day::<ThirdSolution>(day),
         other => {
             if (1u8..=25u8).contains(&other) {
                 println!("unimplemented day!")
@@ -55,7 +56,7 @@ fn run_day<T: Solution>(day: u8) {
 
     const SECS_IN_MICROSECS: f64 = 1000000.0;
 
-    println!("-------------day{day:2}-------------");
+    println!("--------------day{day:2}--------------");
     println!(
         "part1:\t{part1_res}\t\t{:.6}s",
         part1_elapsed.as_micros() as f64 / SECS_IN_MICROSECS
