@@ -30,6 +30,7 @@ fn run(day: u8) {
         1 => run_day::<FirstSolution>(day),
         2 => run_day::<SecondSolution>(day),
         3 => run_day::<ThirdSolution>(day),
+        4 => run_day::<FourthSolution>(day),
         other => {
             if (1u8..=25u8).contains(&other) {
                 println!("unimplemented day!")
