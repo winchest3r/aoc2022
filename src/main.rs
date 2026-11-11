@@ -31,6 +31,7 @@ fn run(day: u8) {
         2 => run_day::<SecondSolution>(day),
         3 => run_day::<ThirdSolution>(day),
         4 => run_day::<FourthSolution>(day),
+        5 => run_day::<FifthSolution>(day),
         other => {
             if (1u8..=25u8).contains(&other) {
                 println!("unimplemented day!")
@@ -59,15 +60,15 @@ fn run_day<T: Solution>(day: u8) {
 
     println!("--------------day{day:2}--------------");
     println!(
-        "part1:\t{part1_res}\t\t{:.6}s",
+        "[{:.6}s] part1: {part1_res}",
         part1_elapsed.as_micros() as f64 / SECS_IN_MICROSECS
     );
     println!(
-        "part2:\t{part2_res}\t\t{:.6}s",
+        "[{:.6}s] part2: {part2_res}",
         part2_elapsed.as_micros() as f64 / SECS_IN_MICROSECS
     );
     println!(
-        "total:\t\t\t{:.6}s",
+        "[{:.6}s] :total",
         total_elapsed.as_micros() as f64 / SECS_IN_MICROSECS
     )
 }

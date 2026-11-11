@@ -1,3 +1,4 @@
+mod fifth;
 mod first;
 mod fourth;
 mod second;
@@ -18,6 +19,7 @@ pub trait Solution {
 
 pub mod prelude {
     pub use crate::aoc2022::Solution;
+    pub use crate::aoc2022::fifth::FifthSolution;
     pub use crate::aoc2022::first::FirstSolution;
     pub use crate::aoc2022::fourth::FourthSolution;
     pub use crate::aoc2022::second::SecondSolution;
