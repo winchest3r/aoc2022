@@ -1,5 +1,5 @@
-mod aoc2022;
-mod utils;
+pub mod aoc2022;
+pub mod utils;
 
 use std::time::Instant;
 
@@ -35,6 +35,7 @@ fn run(day: u8) {
         6 => run_day::<SixthSolution>(day),
         7 => run_day::<SeventhSolution>(day),
         8 => run_day::<EighthSolution>(day),
+        9 => run_day::<NinthSolution>(day),
         other => {
             if (1u8..=25u8).contains(&other) {
                 println!("unimplemented day!")
