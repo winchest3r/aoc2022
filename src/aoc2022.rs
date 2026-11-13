@@ -6,6 +6,7 @@ mod ninth;
 mod second;
 mod seventh;
 mod sixth;
+mod tenth;
 mod third;
 
 /// Basic trait for all solutions.
@@ -31,5 +32,6 @@ pub mod prelude {
     pub use crate::aoc2022::second::SecondSolution;
     pub use crate::aoc2022::seventh::SeventhSolution;
     pub use crate::aoc2022::sixth::SixthSolution;
+    pub use crate::aoc2022::tenth::TenthSolution;
     pub use crate::aoc2022::third::ThirdSolution;
 }
