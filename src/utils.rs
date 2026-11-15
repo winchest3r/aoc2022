@@ -6,7 +6,7 @@ pub const SPLIT_PATTERN: &'static str = cfg_select! {
 
 /// Typical 2D point type with signed integer coordinates.
 /// Expects that +Y is DOWN and +X is RIGHT.
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point {
     pub x: i64,
     pub y: i64,
