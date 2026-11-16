@@ -26,6 +26,10 @@ impl Point {
     pub const fn distance_squared(self, other: Self) -> u64 {
         (self.x - other.x).pow(2) as u64 + (self.y - other.y).pow(2) as u64
     }
+
+    pub fn magnitude(self) -> f64 {
+        (self.distance_squared(Point::ZERO) as f64).sqrt()
+    }
 }
 
 impl std::ops::Add for Point {

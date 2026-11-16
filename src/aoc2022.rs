@@ -2,6 +2,7 @@ mod eighth;
 mod eleventh;
 mod fifth;
 mod first;
+mod fourteenth;
 mod fourth;
 mod ninth;
 mod second;
@@ -31,6 +32,7 @@ pub mod prelude {
     pub use crate::aoc2022::eleventh::EleventhSolution;
     pub use crate::aoc2022::fifth::FifthSolution;
     pub use crate::aoc2022::first::FirstSolution;
+    pub use crate::aoc2022::fourteenth::FourteenthSolution;
     pub use crate::aoc2022::fourth::FourthSolution;
     pub use crate::aoc2022::ninth::NinthSolution;
     pub use crate::aoc2022::second::SecondSolution;
