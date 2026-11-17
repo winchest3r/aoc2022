@@ -30,6 +30,10 @@ impl Point {
     pub fn magnitude(self) -> f64 {
         (self.distance_squared(Point::ZERO) as f64).sqrt()
     }
+
+    pub fn manhattan_distance(self, other: Self) -> u64 {
+        (self.x - other.x).abs() as u64 + (self.y - other.y).abs() as u64
+    }
 }
 
 impl std::ops::Add for Point {
