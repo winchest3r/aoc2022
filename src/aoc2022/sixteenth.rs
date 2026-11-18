@@ -12,6 +12,7 @@ struct State {
     pub position: usize,
     pub time_left: u64,
     pub opened: u64,
+    pub pressure: u64,
 }
 
 pub struct SixteenthSolution;
@@ -19,32 +20,68 @@ pub struct SixteenthSolution;
 impl Solution for SixteenthSolution {
     fn part1(#[allow(unused)] input: &str) -> String {
         let (map, flow) = get_valve_map_optimized(input);
+        let total_results = 1 << (map.len() - 1); // enough without AA (doubled in size with it)
 
         let state = State {
             position: 0,
             time_left: 30,
             opened: 0,
+            pressure: 0,
         };
 
-        pressure_calc_dfs(&map, &flow, state).to_string()
+        let mut results: Vec<u64> = vec![0u64; total_results];
+        pressure_calc_dfs(&map, &flow, state, &mut results);
+        results.iter().max().unwrap().to_string()
+    }
+
+    fn part2(#[allow(unused)] input: &str) -> String {
+        let (map, flow) = get_valve_map_optimized(input);
+        let total_results = 1 << (map.len() - 1);
+
+        let state = State {
+            position: 0,
+            time_left: 26,
+            opened: 0,
+            pressure: 0,
+        };
+        let mut results: Vec<u64> = vec![0u64; total_results];
+        results.resize(total_results, 0);
+        pressure_calc_dfs(&map, &flow, state, &mut results);
+
+        // subset max propagation
+        let n = map.len() - 1;
+        for bit in 0..n {
+            for mask in 0..(1 << n) {
+                if mask & (1 << bit) != 0 {
+                    results[mask] = results[mask].max(results[mask ^ (1 << bit)]);
+                }
+            }
+        }
+
+        // mask disjoint of our best movements and elephant's best - best approach overall
+        let answer = (0..results.len())
+            .map(|mask| results[mask] + results[(results.len() - 1) ^ mask])
+            .max()
+            .unwrap();
+        answer.to_string()
     }
 }
 
-fn pressure_calc_dfs(map: &[Vec<usize>], flow: &[Option<Valve>], state: State) -> u64 {
-    let mut max_pressure = 0;
+fn pressure_calc_dfs(map: &[Vec<usize>], flow: &[Valve], state: State, results: &mut [u64]) {
+    results[state.opened as usize] = results[state.opened as usize].max(state.pressure);
 
     // try for every non-opened and reachable
     for &next_idx in &map[state.position] {
-        let bit = 1 << next_idx;
+        let bit = 1 << (next_idx - 1);
 
         // if opened
         if state.opened & bit != 0 {
             continue;
         }
-        let valve = flow[next_idx].as_ref().unwrap();
+        let valve = &flow[next_idx];
 
         // state.position -> next_idx
-        let distance = flow[state.position].as_ref().unwrap().distances[next_idx];
+        let distance = flow[state.position].distances[next_idx];
 
         // not enough time
         let cost = distance + 1;
@@ -54,19 +91,15 @@ fn pressure_calc_dfs(map: &[Vec<usize>], flow: &[Option<Valve>], state: State) -
         let remaining_time = state.time_left - cost;
 
         // get pressure
-        let pressure = remaining_time * valve.flow as u64;
         let next_state = State {
             position: next_idx,
             time_left: remaining_time,
             opened: state.opened | bit,
+            pressure: state.pressure + remaining_time * valve.flow as u64,
         };
         // and recursively processs through valves
-        let total_pressure = pressure + pressure_calc_dfs(map, flow, next_state);
-        // and save best result
-        max_pressure = max_pressure.max(total_pressure);
+        pressure_calc_dfs(map, flow, next_state, results);
     }
-
-    max_pressure
 }
 
 /// Returns all adjacent valves with significant flow.
@@ -93,35 +126,43 @@ fn valve_optimization_dfs(map: &[Vec<usize>], flow: &[i64], idx: usize) -> Vec<(
     result
 }
 
-fn get_valve_map_optimized(input: &str) -> (Vec<Vec<usize>>, Vec<Option<Valve>>) {
+fn get_valve_map_optimized(input: &str) -> (Vec<Vec<usize>>, Vec<Valve>) {
     // there is a lot of valves with flow = 0 -> we can remove them and just
     // save distance between signinficant valves.
     // only exclusion is for AA (idx=0) - because it's starting point.
 
     let (map, flow): (Vec<Vec<usize>>, Vec<i64>) = gev_valve_map(input);
 
-    let mut map_opt: Vec<Vec<usize>> = Vec::new();
-    map_opt.resize(map.len(), Vec::new());
-    let mut flow_opt: Vec<Option<Valve>> = Vec::new();
-    flow_opt.resize(flow.len(), None);
+    // build index mappings without 0 flow valves.
+    let mut old_to_new = vec![usize::MAX; map.len()];
+    let mut new_to_old = Vec::new();
 
     for idx in 0..map.len() {
-        // skip zero flowed except AA
-        if flow[idx] == 0 && idx != 0 {
-            continue;
+        if flow[idx] > 0 || idx == 0 {
+            old_to_new[idx] = new_to_old.len();
+            new_to_old.push(idx);
         }
+    }
 
+    let useful_count = new_to_old.len();
+
+    let mut map_opt = vec![Vec::new(); useful_count];
+    let mut flow_opt = Vec::with_capacity(useful_count);
+
+    for (new_idx, &old_idx) in new_to_old.iter().enumerate() {
         let mut valve = Valve {
-            flow: flow[idx],
-            distances: Vec::new(),
+            flow: flow[old_idx],
+            distances: vec![0; useful_count],
         };
-        valve.distances.resize(flow.len(), 0);
 
-        for (adj_idx, adj_dist) in valve_optimization_dfs(&map, &flow, idx) {
-            valve.distances[adj_idx] = adj_dist;
-            map_opt[idx].push(adj_idx);
+        for (adj_old_idx, distance) in valve_optimization_dfs(&map, &flow, old_idx) {
+            let adj_new_idx = old_to_new[adj_old_idx];
+
+            valve.distances[adj_new_idx] = distance;
+            map_opt[new_idx].push(adj_new_idx);
         }
-        flow_opt[idx] = Some(valve);
+
+        flow_opt.push(valve);
     }
 
     (map_opt, flow_opt)
