@@ -101,3 +101,44 @@ impl From<(u64, u64)> for Point {
         Point::new(value.0 as i64, value.1 as i64)
     }
 }
+
+/// Same as Point but with Z dimension.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Point3 {
+    pub x: i64,
+    pub y: i64,
+    pub z: i64,
+}
+
+impl Point3 {
+    pub const UP: Point3 = Point3::new(0, 1, 0);
+    pub const DOWN: Point3 = Point3::new(0, -1, 0);
+    pub const RIGHT: Point3 = Point3::new(1, 0, 0);
+    pub const LEFT: Point3 = Point3::new(-1, 0, 0);
+    pub const FRONT: Point3 = Point3::new(0, 0, -1);
+    pub const BACK: Point3 = Point3::new(0, 0, 1);
+    /// Direction from unit vectors. Front is -Z.
+    pub const DIRECTIONS: [Point3; 6] = [
+        Point3::UP,
+        Point3::DOWN,
+        Point3::RIGHT,
+        Point3::LEFT,
+        Point3::FRONT,
+        Point3::BACK,
+    ];
+
+    pub const fn new(x: i64, y: i64, z: i64) -> Self {
+        Self { x, y, z }
+    }
+}
+
+impl std::ops::Add for Point3 {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}

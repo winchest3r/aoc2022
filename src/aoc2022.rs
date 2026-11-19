@@ -1,3 +1,4 @@
+mod eighteenth;
 mod eighth;
 mod eleventh;
 mod fifteenth;
@@ -31,6 +32,7 @@ pub trait Solution {
 
 pub mod prelude {
     pub use crate::aoc2022::Solution;
+    pub use crate::aoc2022::eighteenth::EighteenthSolution;
     pub use crate::aoc2022::eighth::EighthSolution;
     pub use crate::aoc2022::eleventh::EleventhSolution;
     pub use crate::aoc2022::fifteenth::FifteenthSolution;
