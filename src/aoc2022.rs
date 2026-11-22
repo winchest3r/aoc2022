@@ -19,6 +19,7 @@ mod thirteenth;
 mod twelfth;
 mod twentieth;
 mod twentyfirst;
+mod twentysecond;
 
 /// Basic trait for all solutions.
 pub trait Solution {
@@ -56,4 +57,5 @@ pub mod prelude {
     pub use crate::aoc2022::twelfth::TwelfthSolution;
     pub use crate::aoc2022::twentieth::TwentiethSolution;
     pub use crate::aoc2022::twentyfirst::TwentyFirstSolution;
+    pub use crate::aoc2022::twentysecond::TwentySecondSolution;
 }
