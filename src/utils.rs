@@ -90,6 +90,16 @@ impl std::ops::Mul<u64> for Point {
     }
 }
 
+impl std::ops::Div<i64> for Point {
+    type Output = Point;
+    fn div(self, rhs: i64) -> Self::Output {
+        Point {
+            x: self.x / rhs,
+            y: self.y / rhs,
+        }
+    }
+}
+
 impl From<(i64, i64)> for Point {
     fn from(value: (i64, i64)) -> Self {
         Point::new(value.0, value.1)
@@ -129,6 +139,14 @@ impl Point3 {
 
     pub const fn new(x: i64, y: i64, z: i64) -> Self {
         Self { x, y, z }
+    }
+
+    pub const fn negate(self) -> Self {
+        Self::new(-self.x, -self.y, -self.z)
+    }
+
+    pub const fn dot(self, rhs: Self) -> i64 {
+        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
     }
 }
 
