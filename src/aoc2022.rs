@@ -19,6 +19,7 @@ mod thirteenth;
 mod twelfth;
 mod twentieth;
 mod twentyfirst;
+mod twentyfourth;
 mod twentysecond;
 mod twentythird;
 
@@ -58,6 +59,7 @@ pub mod prelude {
     pub use crate::aoc2022::twelfth::TwelfthSolution;
     pub use crate::aoc2022::twentieth::TwentiethSolution;
     pub use crate::aoc2022::twentyfirst::TwentyFirstSolution;
+    pub use crate::aoc2022::twentyfourth::TwentyFourthSolution;
     pub use crate::aoc2022::twentysecond::TwentySecondSolution;
     pub use crate::aoc2022::twentythird::TwentyThirdSolution;
 }
